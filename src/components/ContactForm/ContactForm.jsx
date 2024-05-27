@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import css from './ContactForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from '../../redux/operations';
 import { Notify } from 'notiflix';
@@ -7,6 +6,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
+import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -15,7 +15,8 @@ export const ContactForm = () => {
   const { contacts } = useSelector(state => state.contacts);
 
   const handleNameChange = e => {
-    setName(e.target.value);
+    const { value } = e.target;
+    setName(value);
   };
 
   const handleNumberChange = e => {
@@ -24,22 +25,33 @@ export const ContactForm = () => {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    if (contacts.some(contact => contact.name === name)) {
+    const contactList = [...contacts];
+    if (
+      contactList.findIndex(
+        contact => name === contact.name
+      ) !== -1
+    ) {
       Notify.warning('Contact already exists!', {
         position: 'left-top',
       });
     } else {
-      dispatch(addContact({ name, number: phone }));
-      setName('');
-      setPhone('');
+      dispatch(
+        addContact({
+          name,
+          number: phone,
+        })
+      );
     }
+
+    setName('');
+    setPhone('');
   };
 
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
-    backgroundColor: purple[500],
+    backgroundColor: '#673ab7',
     '&:hover': {
-      backgroundColor: purple[700],
+      backgroundColor: '#673ab7',
       boxShadow: '2px 6px 6px rgba(0, 0, 0, 0.4)',
     },
   }));

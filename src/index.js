@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client'; // Zmiana importu
 import App from './components/App.jsx';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
@@ -9,11 +9,11 @@ import { store, persistor } from '../src/redux/store.js';
 import 'modern-normalize';
 import './index.css';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter basename='/goit-react-hw-08-phonebook'>
+        <BrowserRouter basename='/react-homework-template'>
           <App />
         </BrowserRouter>
       </PersistGate>
